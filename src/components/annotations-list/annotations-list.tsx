@@ -8,9 +8,11 @@ import { ConfirmDeleteDialog } from '../elements/elements'
 type Props = {
   annotations: readonly Annotation[]
   onDeleteAnnotation: (annotationId: string) => void
+  onToggleDialed: (annotationId: string) => void
+  onToggleEstablished: (annotationId: string) => void
 }
 
-export const AnnotationsList = ({ annotations, onDeleteAnnotation }: Props) => {
+export const AnnotationsList = ({ annotations, onDeleteAnnotation, onToggleDialed, onToggleEstablished }: Props) => {
   const [deleteTarget, setDeleteTarget] = useState<{ id: string; name: string } | null>(null)
 
   const validatedAnnotations = validateAnnotations(annotations)
@@ -80,6 +82,30 @@ export const AnnotationsList = ({ annotations, onDeleteAnnotation }: Props) => {
                     <Badge variant="subtle" color={color}>
                       {annotation.type}
                     </Badge>
+                    {annotation.type === 'crux' && (
+                      <Button
+                        size="sm"
+                        variant={annotation.isDialed ? 'solid' : 'outline'}
+                        colorScheme={annotation.isDialed ? 'blue' : 'gray'}
+                        onClick={() => onToggleDialed(annotation.id)}
+                        fontSize="xs"
+                        px={2}
+                      >
+                        {annotation.isDialed ? 'Dialed ✓' : 'Dialed?'}
+                      </Button>
+                    )}
+                    {annotation.type === 'rest' && (
+                      <Button
+                        size="sm"
+                        variant={annotation.isEstablished ? 'solid' : 'outline'}
+                        colorScheme={annotation.isEstablished ? 'green' : 'gray'}
+                        onClick={() => onToggleEstablished(annotation.id)}
+                        fontSize="xs"
+                        px={2}
+                      >
+                        {annotation.isEstablished ? 'Established ✓' : 'Established?'}
+                      </Button>
+                    )}
                     <Button
                       size="sm"
                       variant="ghost"

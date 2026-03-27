@@ -31,7 +31,7 @@ type UseAnnotationModeReturn = {
   }
   handleRightClick: (event: React.MouseEvent) => void
   handleOpenAnnotationForm: () => void
-  handleAddAnnotation: (data: { type: Annotation['type']; name: string }) => void
+  handleAddAnnotation: (data: { type: Annotation['type']; name: string; difficultyRating?: number; restQuality?: number }) => void
 }
 
 export const useAnnotationMode = ({
@@ -87,11 +87,13 @@ export const useAnnotationMode = ({
   }, [])
 
   const handleAddAnnotation = useCallback(
-    (data: { type: Annotation['type']; name: string }) => {
+    (data: { type: Annotation['type']; name: string; difficultyRating?: number; restQuality?: number }) => {
       const newAnnotation: Omit<Annotation, 'id'> = {
         type: data.type,
         name: data.name,
         y: annotationForm.yPosition,
+        difficultyRating: data.difficultyRating,
+        restQuality: data.restQuality,
       }
       onAddAnnotation(newAnnotation)
       closeAnnotationForm()

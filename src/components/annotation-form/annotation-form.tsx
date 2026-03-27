@@ -12,7 +12,7 @@ type AnnotationFormProps = {
   isOpen: boolean
   yPosition: number
   onClose: () => void
-  onSubmit: (annotation: { type: Annotation['type']; name: string }) => void
+  onSubmit: (annotation: { type: Annotation['type']; name: string; difficultyRating?: number; restQuality?: number }) => void
   existingAnnotations: readonly Annotation[]
 }
 
@@ -76,6 +76,8 @@ export const AnnotationForm = ({ isOpen, yPosition, onClose, onSubmit, existingA
     onSubmit({
       type: data.type,
       name: data.name.trim(),
+      difficultyRating: data.difficultyRating,
+      restQuality: data.restQuality,
     })
     handleClose()
   }

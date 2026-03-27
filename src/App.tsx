@@ -5,6 +5,7 @@ import { SettingsProvider } from './contexts/settings-context'
 import { ProjectProvider } from './contexts/project-context'
 import { ProjectList } from './components/project-list'
 import { ProjectEditor } from './components/dashboard'
+import { SettingsPage } from './components/settings/settings-page'
 import { ErrorBoundary } from './components/error-boundary'
 import system from './theme'
 
@@ -12,6 +13,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<ProjectList />} />
+      <Route path="/settings" element={<SettingsPage />} />
       <Route path="/:projectId" element={<ProjectEditor />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>

@@ -18,6 +18,7 @@ export type Annotation = {
   holdReference?: string
   isDialed?: boolean // can do 3x in a row
   dialedDate?: string
+  isEstablished?: boolean // rest only: you've used it as a real rest in context
 }
 
 export type CompletionStatus = 'not_started' | 'in_progress' | 'completed'
@@ -93,11 +94,20 @@ export type Session = {
   notes?: string
 }
 
+export type MindsetProgress = {
+  hasVisualized: boolean
+  hasBreathingPlan: boolean
+  hasSessionGoal: boolean
+  hasReviewedBeta: boolean
+  hasPositiveMonologue: boolean
+}
+
 export type ProjectData = {
   routeLine: Point[]
   annotations: Annotation[]
   metadata: ProjectMetadata
   sessions?: Session[]
+  mindsetProgress?: MindsetProgress
 }
 
 export type Project = {

@@ -1,13 +1,14 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Box, Button, Heading, Text, VStack, HStack, Input, SimpleGrid } from '@chakra-ui/react'
-import { useProject } from '../../contexts'
+import { Box, Button, Flex, Heading, Text, VStack, HStack, Input, SimpleGrid } from '@chakra-ui/react'
+import { useProject, useSettings } from '../../contexts'
 import { match } from 'ts-pattern'
 import { getGradeLabel } from '../../utils/grades'
 import type { Project } from '../../types'
 
 export const ProjectList = () => {
   const { projects, createProject, deleteProject } = useProject()
+  const { settings } = useSettings()
   const navigate = useNavigate()
   const [newProjectName, setNewProjectName] = useState('')
 
@@ -34,22 +35,28 @@ export const ProjectList = () => {
       .otherwise(() => 'gray')
 
   const getGradeDisplay = (project: Project) => {
-    const { difficulty, gradingSystem } = project.data.metadata
-    if (!difficulty || !gradingSystem) {
-      return null
-    }
-    return getGradeLabel(difficulty, gradingSystem)
+    const { difficulty, gradingSystem, projectType } = project.data.metadata
+    if (!difficulty) return null
+    const system =
+      gradingSystem ??
+      (projectType === 'boulder' ? settings.preferredBoulderGradingSystem : settings.preferredGradingSystem)
+    return getGradeLabel(difficulty, system)
   }
 
   return (
     <Box maxW="1200px" mx="auto" p={{ base: 4, md: 8 }}>
       <VStack gap={8} align="stretch">
-        <Box>
-          <Heading as="h1" size="xl" color="gray.800" mb={2}>
-            Projects
-          </Heading>
-          <Text color="gray.500">Your climbing projects</Text>
-        </Box>
+        <Flex justify="space-between" align="flex-start">
+          <Box>
+            <Heading as="h1" size="xl" color="gray.800" mb={2}>
+              Projects
+            </Heading>
+            <Text color="gray.500">Your climbing projects</Text>
+          </Box>
+          <Button size="sm" variant="ghost" colorScheme="gray" onClick={() => navigate('/settings')}>
+            ⚙ Settings
+          </Button>
+        </Flex>
 
         {/* Create new project */}
         <HStack>

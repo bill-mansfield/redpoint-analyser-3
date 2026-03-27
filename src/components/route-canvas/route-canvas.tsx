@@ -1,11 +1,13 @@
 import { Box, Text } from '@chakra-ui/react'
 import * as R from 'remeda'
 import type { Point, Annotation } from '../../types'
+import type { EnergyPoint } from '../../lib/tactical-engine'
 import { useDrawableLine } from '../../hooks/use-drawable-line'
 import { useAnnotationMode } from '../../hooks/use-annotation-mode'
 import { Annotation as AnnotationComponent } from '../annotations/annotation'
 import { AddAnnotationButton } from '../annotation-form/add-annotation-button'
 import { AnnotationForm } from '../annotation-form/annotation-form'
+import { EnergyOverlay } from './energy-overlay'
 import { validateAnnotations, validatePoints } from '../../utils'
 import { ErrorBoundary } from '../error-boundary'
 import { calculateAnnotationPosition, createPolylinePoints, getModeText } from './utils'
@@ -19,6 +21,8 @@ type Props = {
   annotations: readonly Annotation[]
   mode: 'draw' | 'annotation'
   onAddAnnotation: (annotation: Omit<Annotation, 'id'>) => void
+  energyProfile?: EnergyPoint[]
+  showEnergy?: boolean
 }
 
 export const RouteCanvas = ({
@@ -29,6 +33,8 @@ export const RouteCanvas = ({
   annotations,
   mode,
   onAddAnnotation,
+  energyProfile = [],
+  showEnergy = false,
 }: Props) => {
   const validatedLine = validatePoints(line)
   const validatedAnnotations = validateAnnotations(annotations)
@@ -136,6 +142,15 @@ export const RouteCanvas = ({
                 rating={annotation.type === 'crux' ? annotation.difficultyRating : annotation.restQuality}
               />
             ))
+          )}
+
+          {showEnergy && energyProfile.length > 0 && (
+            <EnergyOverlay
+              energyProfile={energyProfile}
+              annotations={validatedAnnotations}
+              canvasWidth={canvasWidth}
+              canvasHeight={canvasHeight}
+            />
           )}
         </svg>
 

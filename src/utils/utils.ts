@@ -65,11 +65,20 @@ export const validateAnnotation = (annotation: unknown): Annotation | null => {
       (value) => Math.min(value, 2000)
     )
 
+    const { difficultyRating, restQuality, isDialed, dialedDate, isEstablished, sectionName, holdReference } = annotation
+
     const validatedAnnotation: Annotation = {
       id: id.trim(),
       type,
       y: clampedY,
       name: name.trim(),
+      ...(typeof difficultyRating === 'number' && { difficultyRating }),
+      ...(typeof restQuality === 'number' && { restQuality }),
+      ...(typeof isDialed === 'boolean' && { isDialed }),
+      ...(typeof dialedDate === 'string' && { dialedDate }),
+      ...(typeof isEstablished === 'boolean' && { isEstablished }),
+      ...(typeof sectionName === 'string' && { sectionName }),
+      ...(typeof holdReference === 'string' && { holdReference }),
     }
 
     return validatedAnnotation

@@ -19,6 +19,7 @@ export type {
   RopeDisciplineGrades,
   ClimberGradeProfile,
   Settings,
+  MindsetProgress,
 } from './types'
 
 export type { GradingSystemId, GradingSystemDiscipline, GradingSystem } from './grades'
